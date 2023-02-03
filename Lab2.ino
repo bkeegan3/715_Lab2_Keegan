@@ -4,16 +4,15 @@
 
 #define DHTPIN 2 
 #define DHTTYPE DHT22
-#define Temp_delay 10000
-#define ledPin 9
 
+uint8_t tim1Cnt=0;
+uint8_t read_tmp_flg=0;
 DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   dht.begin();
-  pinMode(ledPin, OUTPUT);
   tim1Init();
 
   sei(); // enable interrupts
@@ -22,6 +21,11 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly
+  if(read_tmp_flg==1){
+    read_tmp_flg=0;
+
+    read_DHT();
+  }
 
 }
 
@@ -34,13 +38,10 @@ void read_DHT (){
     return;
   }
 
-  // digitalWrite(ledPin, !digitalRead(ledPin)); // toggle the led pin
-
   Serial.print(F("%  Temperature: "));
   Serial.print(temp);
   Serial.println(F("°F"));
  
-
 }
 
 void tim1Init(){
@@ -55,7 +56,13 @@ void tim1Init(){
 }
 
 ISR(TIMER1_OVF_vect){
-	digitalWrite(ledPin, !digitalRead(ledPin));
+  tim1Cnt++;
+  if (tim1Cnt==2){
+    read_tmp_flg=1;
+    tim1Cnt=0;
+  }
+
+	
 }
 
 
