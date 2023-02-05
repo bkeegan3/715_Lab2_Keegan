@@ -4,12 +4,13 @@
 
 #define DHTPIN 2 
 #define DHTTYPE DHT22
-#define temp_time 0
+#define temp_time 2
 #define ledPin 9
 #define ledPinY 10
 
 uint8_t tim1Cnt=0;
 uint8_t read_tmp_flg=0;
+float total_time =0;
 DHT dht(DHTPIN, DHTTYPE);
 
 float temp_ary[128];
@@ -53,21 +54,39 @@ void read_DHT (){
   }
 
   temp_ary[ temp_indx ] = temp;
-  temp_indx++;
+  
+  if(temp_indx==127){
+    temp_indx=127;
+  } else {
+    temp_indx++;
+  }
   digitalWrite( ledPin, !digitalRead(ledPin) );
 }
 
 //----------------------------------------------------------
 //----------------Serial Transfer---------------------------
 void temp_serial_tx(){
+  String data_cmd;
   if(Serial.available()==0){ 
     return;
     }
+  while( Serial.available()==0 ){ // Wait for str input 
+    }
+  Serial.println("type data to read data");
+  data_cmd = Serial.readStringUntil("\n");
+  data_cmd.trim(); // readString adds garbage to the end of the string
+  if (data_cmd!="data")
+  {
+    return;
+  }
+
 
   cli();            // disable interrupts while txing data
-  digitalWrite( ledPinY, !digitalRead(ledPin) );
-
+  digitalWrite( ledPinY, !digitalRead( ledPinY) );
+  
   for( int i=0 ; i<temp_indx ; i++){
+    Serial.print(4.194*i); // (seconds) 65535 ticks / 15.625KHz
+    Serial.print(", ");
     Serial.println( temp_ary[i], 2 );
   }
   Serial.end();
