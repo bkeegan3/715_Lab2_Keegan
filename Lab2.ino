@@ -4,11 +4,12 @@
 
 #define DHTPIN 2 
 #define DHTTYPE DHT22
-#define temp_time 2
+#define temp_time 3
 #define ledPin 9
 #define ledPinY 10
 
 uint8_t tim1Cnt=0;
+uint8_t tim1tick = 25178; // 2 ovrflw + 25178 ticks = 10 seconds
 uint8_t read_tmp_flg=0;
 float total_time =0;
 DHT dht(DHTPIN, DHTTYPE);
@@ -85,7 +86,7 @@ void temp_serial_tx(){
   digitalWrite( ledPinY, !digitalRead( ledPinY) );
   
   for( int i=0 ; i<temp_indx ; i++){
-    Serial.print(4.194*i); // (seconds) 65535 ticks / 15.625KHz
+    Serial.print(10*i); // (seconds) 65535 ticks / 15.625KHz
     Serial.print(", ");
     Serial.println( temp_ary[i], 2 );
   }
@@ -97,14 +98,17 @@ void temp_serial_tx(){
 void tim1Init(){
   TCCR1A = 0; // Reset timer1, configure for normal mode
 		
-  // clock_prescale=clk/1024			
+  // prescaler = 1024			
   TCCR1B |= (1<<CS12) |(1<<CS10);
   TCCR1B &= ~(1<<CS11);
 
-  TIMSK1 = (TOIE1|1); 	// Set timer1 for overflow interrupt enable 
+  //
+  OCR1A = tim1tick;
+
+  TIMSK1 = (1<<OCIE1A); 	// Set timer1 for  interrupt enable at OC1A
 }
 
-ISR(TIMER1_OVF_vect){
+ISR(TIMER1_COMPA_vect ){
   tim1Cnt++;
 
   if ( tim1Cnt >= temp_time ){
