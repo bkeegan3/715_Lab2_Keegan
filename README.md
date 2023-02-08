@@ -47,4 +47,4 @@ Libraries used
 ![](https://github.com/bkeegan3/715_Lab2_Keegan/blob/master/images/Temperature_small.jpg)
 
 ## Video
-![](https://youtu.be/v8QlaiG76-8)
+[![](http://img.youtube.com/vi/v8QlaiG76-8/0.jpg)](http://www.youtube.com/watch?v=v8QlaiG76-8)
