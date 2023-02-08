@@ -5,7 +5,7 @@ Develop a C or C++ application which executes on an Arduino that captures temper
 
 ## Design
 ### Hardware
-For the temperature sensor I used the DHT22. Once provided 5V and gnd the DHT22 provides its digital temperature output on pin 2 of the device. Instead of using a 10 foot serial cable to transmit data I opted to operate the arduino via battery power for mobile operation. Once the 10 minutes are complete I would connect up to a serial port to transmit the data. 
+For the temperature sensor I used the DHT22. Once provided 5V and gnd the DHT22 provides its digital temperature output on pin 2 of the device. Instead of using a 10 foot serial cable to transmit data I opted to operate the arduino via battery power for mobile operation. Once the 10 minutes are complete I would connect up to a serial port to transmit the data.<br> 
 ![](https://github.com/bkeegan3/715_Lab2_Keegan/blob/master/images/Lab2_HW_small.jpg) 
 | Arduino Pins  |                   |
 | ------------- | ------------------|
@@ -47,3 +47,4 @@ Libraries used
 ![](https://github.com/bkeegan3/715_Lab2_Keegan/blob/master/images/Temperature_small.jpg)
 
 ## Video
+![](https://youtu.be/v8QlaiG76-8)
