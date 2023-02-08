@@ -1,5 +1,4 @@
 #include "DHT.h"
-#include <TimeInterrupt.h>
 #include <avr/io.h>
 
 #define DHTPIN 2 
