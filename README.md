@@ -5,11 +5,12 @@ Develop a C or C++ application which executes on an Arduino that captures temper
 
 ## Design
 ### Hardware
-
+For the temperature sensor I used the DHT22. Once provided 5V and gnd the DHT22 provides its digital temperature output on pin 2 of the device. Instead of using a 10 foot serial cable to transmit data I opted to operate the arduino via battery power for mobile operation. Once the 10 minutes are complete I would connect up to a serial port to transmit the data. 
+![]() 
 ### Breadboard
 
-### reset enable
-
+### Reset enable
+A good amount of troubleshooting was spent on connecting up the serial port of the arduino to the PC. After research online I found this [post](https://playground.arduino.cc/Main/DisablingAutoResetOnSerialConnection/) that the DTR signal resets the arduino. The methods provided in that post were to add a resistor between reset and 5V or and a capacitor between reset and gnd; neither of those solutions worked for me. The more invasive method mentioned in that post is to cut the trace between the two pads highlighted by the white RESET_EN overlay !()[]. This does affect how code is uploaded to the arduino now that the device will not auto reset when a usb is connected. The easiest way to work around this is to jumper the two pads with some jumper wire.
 
 ### Software
 For software I followed the lab instructions and used a Round Robbin with Interrupts design. To tackle getting periodic measurements from the DHT22 I used timer1 on the ATmega328p which is a 16bit timer. To
@@ -26,5 +27,8 @@ This could be used to achieve a period of 4.2 seconds, 8.4 seconds, 12.6 seconds
    16MHz * 1.612 seconds  
   ---------------------- = 25,187 ticks
 <br>   1024    
+
+## Temperature Plot
+
 
 ## Video
