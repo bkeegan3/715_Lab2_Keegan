@@ -32,7 +32,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly
 
-  // 8.2 seconds have past read temp
+  // 10 seconds have past read temp
   if(read_tmp_flg==1){
     read_tmp_flg=0;
     read_DHT();
@@ -102,7 +102,7 @@ void tim1Init(){
   TCCR1B |= (1<<CS12) |(1<<CS10);
   TCCR1B &= ~(1<<CS11);
 
-  //
+  //  2 ovrflw + 25178 ticks = 10 seconds
   OCR1A = tim1tick;
 
   TIMSK1 = (1<<OCIE1A); 	// Set timer1 for  interrupt enable at OC1A
