@@ -6,14 +6,23 @@ Develop a C or C++ application which executes on an Arduino that captures temper
 ## Design
 ### Hardware
 For the temperature sensor I used the DHT22. Once provided 5V and gnd the DHT22 provides its digital temperature output on pin 2 of the device. Instead of using a 10 foot serial cable to transmit data I opted to operate the arduino via battery power for mobile operation. Once the 10 minutes are complete I would connect up to a serial port to transmit the data. 
-![]() 
-### Breadboard
+![](https://github.com/bkeegan3/715_Lab2_Keegan/blob/master/images/Lab2_HW_small.jpg) 
+| Arduino Pins  |                   |
+| ------------- | ------------------|
+| Digital 10    | LED YLW           |
+| Digital 13    | LED RED           |
+| Digital 2     | DHT-2             |
+| 5V            | DHT-1             |
+| GND           | DHT-4             |
 
 ### Reset enable
-A good amount of troubleshooting was spent on connecting up the serial port of the arduino to the PC. After research online I found this [post](https://playground.arduino.cc/Main/DisablingAutoResetOnSerialConnection/) that the DTR signal resets the arduino. The methods provided in that post were to add a resistor between reset and 5V or and a capacitor between reset and gnd; neither of those solutions worked for me. The more invasive method mentioned in that post is to cut the trace between the two pads highlighted by the white RESET_EN overlay !()[]. This does affect how code is uploaded to the arduino now that the device will not auto reset when a usb is connected. The easiest way to work around this is to jumper the two pads with some jumper wire.
+A good amount of troubleshooting was spent on connecting up the serial port of the arduino to the PC. After research online I found this [post](https://playground.arduino.cc/Main/DisablingAutoResetOnSerialConnection/) that the DTR signal resets the arduino. The methods provided in that post were to add a resistor between reset and 5V or and a capacitor between reset and gnd; neither of those solutions worked for me. The more invasive method mentioned in that post is to cut the trace between the two pads highlighted by the white RESET_EN overlay. Once I cut that trace I was able to proceed with the serial port transmission ![](https://github.com/bkeegan3/715_Lab2_Keegan/blob/master/images/Reset_enable.JPG).<br> 
+This does affect how code is uploaded to the arduino now that the device will not auto reset when a usb is connected. The easiest way to work around this is to jumper the two pads with some jumper wire.
 
+---
 ### Software
-For software I followed the lab instructions and used a Round Robbin with Interrupts design. To tackle getting periodic measurements from the DHT22 I used timer1 on the ATmega328p which is a 16bit timer. To
+
+For software I followed the lab instructions and used a Round Robbin with Interrupts design. To tackle getting periodic measurements from the DHT22 I used timer1 on the ATmega328p which is a 16bit timer. For the serial port data transmission I first wait to see if there is any data written to the port to determine if a connection has beed made. Once there is a conenction I wait for the sentinel "data" to be entered and promptly spit out the data. Using teraterm as a serial port monitor I log the data to a .log file and then open it in excel to plot it.
 
 ### Timer1
 The 16bit timer is not able to count up to 10 seconds. The highest possible value, using a prescaler = 1024 to divide the clock, is
@@ -28,7 +37,13 @@ This could be used to achieve a period of 4.2 seconds, 8.4 seconds, 12.6 seconds
   ---------------------- = 25,187 ticks
 <br>   1024    
 
-## Temperature Plot
+Libraries used
+* [Adafruit-DHT-Library](https://github.com/adafruit/DHT-sensor-library)
+* [AVR/io.h](https://github.com/avrdudes/avr-libc/blob/502f5091d2b49191a87eb4a3a926525a2a34926f/include/avr/io.h)
 
+[Software](https://github.com/bkeegan3/715_Lab2_Keegan/blob/master/Lab2.ino)
+
+## Temperature Plot
+![](https://github.com/bkeegan3/715_Lab2_Keegan/blob/master/images/Temperature_small.jpg)
 
 ## Video
